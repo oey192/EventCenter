@@ -1,0 +1,118 @@
+name: EventCenter
+main: com.andoutay.eventcenter.EventCenter
+version: 0.0.1
+description: >
+             EventCenter adds a host of functionality for making and running events such as regioning, spawn points, teams, and event specific chat
+
+commands:
+  event:
+    description: General event related commands
+    usage: Use /<command> help for info on how to use this command
+    aliases: [ec, eventcenter]
+  tokens:
+    description: Redeem tokens for winning events or view how many tokens you have
+    usage: /<command> [view|claim (#)]
+  evt:
+    description: Edit settings regarding Event Chat
+    usage: /<command> [viewall [on|off]|command [on|off]]
+  team:
+    description: Manage teams during events
+    usage: Use /<command> help for info on how to use this command
+
+permissions:
+  eventcenter.*:
+    description: Gives access to all EventCenter commands
+    default: false
+    children:
+      eventcenter.mod.*: true
+      eventcenter.list: true
+      eventcenter.join: true
+      eventcenter.loginInfo: true
+      eventcenter.queue.*: true
+      eventcenter.chat.*: true
+      eventcenter.allchat: true
+      eventcenter.version: true
+      eventcenter.reload: true
+      eventcenter.help.*: true
+  eventcenter.mod.*:
+    description: Gives access to creation, deletion and editing of events
+    default: false
+    children:
+      eventcenter.mod.new: true
+      eventcenter.mod.edit: true
+      eventcenter.mod.remove: true
+  eventcenter.mod.new:
+    description: Allows the player to create new events/regions
+    default: false
+  eventcenter.mod.edit:
+    description: Allows the player to edit existing events/regions
+    default: false
+  eventcenter.mod.remove:
+    description: Allows the player to delete an event/region
+    default: false
+  eventcenter.list:
+    description: Shows a list of currently running and queued events
+    default: false
+  eventcenter.loginInfo:
+    description: Shows the player information about current events and scheduled events on login
+    default: false
+  eventcenter.join:
+    description: Allows the player to join events
+    default: true
+  eventcenter.queue.*:
+    description: Allows the player to use all commands regarding the event queue
+    default: false
+    children:
+      eventcenter.queue.add: true
+      eventcenter.queue.remove: true
+      eventcenter.queue.next: true
+      eventcenter.queue.schedule: true
+      eventcenter.queue.announce: true
+  eventcenter.queue.add:
+    description: Allows the player to add an event to the queue
+    default: false
+  eventcenter.queue.remove:
+    description: Allows the player to remove an event from the queue
+    default: false
+  eventcenter.queue.next:
+    description: Allows the player to end the current event (if one is running) and start the next event in the queue
+    default: false
+  eventcenter.queue.schedule:
+    description: Allows the player to schedule an event at some time in the future
+    default: false
+  eventcenter.queue.announce:
+    description: Allows the player to tell the plugin to announce the next event in the queue
+    default: false
+  eventcenter.chat.*:
+    description: Allows the player to use and see event chat
+    default: false
+    children:
+      eventcenter.chat.send: true
+      eventcenter.chat.receive: true
+  eventcenter.chat.send:
+    description: Allows the player to send event chat messages when in events
+    default: false
+  eventcenter.chat.receive:
+    description: Allows the player to see event chat when in events
+    default: false
+  eventcenter.allchat:
+    description: Allows the player to send in-event announcements
+    default: false
+  eventcenter.version:
+    description: Allows the player to check the version of the plugin
+    default: false
+  eventcenter.reload:
+    description: Allows the player to reload the config and events.yml
+    default: false
+  eventcenter.help.*:
+    description: Allows the player to view all help
+    default: false
+    children:
+      eventcenter.help.norm: true
+      eventcenter.help.mod: true
+  eventcenter.help.norm:
+    description: Shows help for general player commands
+    default: true
+  eventcenter.help.mod:
+    description: Shows help for event managers
+    default: false

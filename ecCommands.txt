@@ -1,0 +1,206 @@
+
+
+
+/event create <name> <numTeams>
+Creates a new event with a name of <name>, sets the number of teams for the event and adds whoever issued the command as the event maker
+
+/event select <name>
+Selects an event to set various properties
+"none" can be used to deselect the current event. Note that this means no event can be called "none"
+
+Commands that require an event to be selected or return an error
+
+/event pos1
+Sets the first position for the event region
+
+/event pos2
+Sets the second position for the event region
+
+/event recurs <yes|no|0|1|true|false>
+Sets whether the event recurs or is a one-time event for testing
+
+/event date add <dayOfWeek> <time>
+e.g. /event date add thursday 8:00PM
+Times are assumed to be in EST and will be converted to server time (CST) by the plugin
+
+
+/event team list
+Lists the teams for the event
+
+/event team <teamName|Spec> setspawn
+Sets the spawn point for <teamName> to the your current location (including the direction you're facing)
+
+/event setlength <minutes>
+Sets the default round length for the event
+If set to 0, the event will run until the EC tells it to stop or until other end conditions are met
+
+/event numLives <num>
+Set the maximum number of lives a player can have before being moved to spectate
+Setting this to 0 will cause players to have unlimited lives
+Negative numbers are not allowed
+
+/event description <description>
+Add a description for the event. If a description is already set, using this command again will overwrite the existing description
+
+
+
+/event flag add <flagName> [win] [points]
+Add <flagName> to the event. If "win" is specified, the event will be considered over when this flag triggers and the player or team that triggers the flag will win the event
+If points are specified, that number of points will be given to the player that triggers the flag. Negative points are allowed
+
+/event flag setWin <flagName> [yes|no]
+Yes or no is optional. If neither is present, yes is assumed.
+Makes <flagName> a winnning flag if "yes", makes it a normal flag if "no"
+
+/event flag setPoints <flagName> <points>
+Sets the number of points the flag should give to the trigger-er. Negative values are allowed
+
+/event flag remove <flagName>
+Removes <flagName> from the event.
+
+/event flag setMessage <flagName> <message>
+Sets the message to show to players when the flag is triggered. Every flag will has a default message, but this command can be used to create a custom one.
+$1 may be used to represent the name of the player who triggered the event.
+$2 may be used to represent the name of the player or block effected by the event
+Color codes may be used in the message (e.g. &4, &e, etc)
+
+e.g. &9$1 has dropped $2
+e.g. &e$1&r has killed &8$2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Event Notes
+
+General
+
+Need support for tournament based play. E.g. elimination, etc
+Way to remove all armour and/or items from players at the beginning of event (and if new player join partway through)
+Should also have default set of items to give to all players upon event start and defualt set of items to auto-set as armour (this may make it not necessary to tie in with hat plugin as noted below)
+Should be player configurable - EC sets default item set and another set of possible items and player can choose e.g. via command
+Tie in with hat plugin to auto set a hat per team color to each player if there's more than one team
+Is it possible to cause a lapis block to have the armour value of a diamond helmet?
+
+if no item set is found for an event, clear all participant's inventories
+
+Allow option to repeat appropriate actions from above upon respawn (if allowed)
+
+Look into Vanilla teams - ?
+
+Should be able to constantly make it day in event world during events (or perhaps always?)
+
+Player death events of people who are in events should only be displayed to people in the event
+
+Should prevent players of the opposing team from entering enemy spawn(s)
+
+ECs will need to be able to specify which colors they want used for teams
+But there should also be a way for the plugin to pick randomly
+
+
+tie in with WE - have saved copy of world to reset to at beginning of round - useful for CTF (replaces flags) and breakaway (replace ice)
+
+Make spawn point for ECs in case they need a control room (e.g. Deathrun)
+
+
+Can we disable Friendly fire? And make this configurable per event?
+
+Add/remove certain permissions to/from people when they are playing an event (likewise remove the permissions from them when they stop playing and/or join Spec)
+
+Can we disable the plugin that stops people from picking up other people's items in the event worlds and/or in certain event regions?
+
+Add ability to have timers separate from general round timer
+
+
+Need ability to set sub-regions that cause a player to "die" (aka respawn)
+Perhaps have ability to set a respawn point per death pit?
+
+Need to have sub-region that causes win when player enters it
+
+EC should be able to set a maximum number of player winners when there's only one team (e.g. Deathrun, Evil Race)
+
+
+May need the ability for events to cause actions such as switch player from team A to team B
+e.g. if re-implementing prop-hunt
+
+EC needs command to announce stuff to server as well as people in events
+Perhaps just /bcast and then event specific?
+
+Is it possible to cause a redstone event to happen when EC types /event start ?
+
+Perhaps add a lobby spawn, or just make the lobby area the spec area
+
+
+events that will need to be listened for (flags)
+
+Lever flicking
+Player death
+Player whacked
+Player dropped item
+distance from starting location - ?
+PVP-enabked/disabled
+friendly-fire on/off
+various potions to apply to players
+can an event cause a potion?
+prevent all damage in this region (incl. fall damage???)
+
+
+
+
+
+CTL
+
+
+
+Evil Race
+
+
+Breakaway
+
+
+Prophunt
+Is it possible to disable one team from causing any PVP damage at all?
+Announce how many people are left upon death
+e.g. when less that 5 people are still props, start listing how many people are left whenever someone dies
+e.g. when there are less than X seconds left in the round, start listing how many people are left when time remaining is announced
+
+
+Capture the Flag
+Is it implausible to make subregions for green areas that would restrict bow usage to those areas?
+
+
+
+
+
+
+Todo:
+investigate WorldGuard
+perhaps just add my own flags instead of making own flag system
+
+
+
+
+
+
+
