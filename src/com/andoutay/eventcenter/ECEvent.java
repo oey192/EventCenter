@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class ECEvent
 {
+	private Logger log = Logger.getLogger("Minecraft");
+	
 	private String name;
-	private Location corner1, corner2;
+	private Vector pos1, pos2;
+	private Location tempPos1, tempPos2;
 	private boolean running;
 	private String manager;
 	private List<String> assistants;
@@ -27,7 +32,7 @@ public class ECEvent
 	private long startTime;
 	private ChatColor[] colorArr;
 	
-	public ECEvent(String name, Location one, Location two, int numTeams, String creator)
+	public ECEvent(String name, int numTeams, String creator)
 	{
 		Random r = new Random();
 		ChatColor colors[] = ChatColor.values();
@@ -35,10 +40,14 @@ public class ECEvent
 		boolean done = false;
 		
 		this.name = name;
-		this.corner1 = one;
-		this.corner2 = two;
 		this.creator = creator;
 		this.numTeams = numTeams;
+		
+		tempPos1 = null;
+		tempPos2 = null;
+		
+		//do sthg if numTeams == 0
+		
 		teams = new HashMap<ChatColor, List<Player>>();
 		for (int i = 0; i < numTeams; i++)
 		{
@@ -60,6 +69,54 @@ public class ECEvent
 		running = false;
 		manager = "";
 		defaultTimeout = 0;
+	}
+	
+	public void addPos1(Location pos)
+	{
+		tempPos1 = pos;
+		if (tempPos2 != null)
+			normalizeCorners();
+	}
+	
+	public void addPos2(Location pos)
+	{
+		tempPos2 = pos;
+		if (tempPos1 != null)
+			normalizeCorners();
+	}
+	
+	private void normalizeCorners()
+	{
+		if (tempPos1 == null || tempPos2 == null)
+		{
+			log.severe(EventCenter.logPref + "Internal logic error. Please tell developer to write better code");
+			return;
+		}
+		
+		int minx = tempPos1.getBlockX();
+		int miny = tempPos1.getBlockY();
+		int minz = tempPos1.getBlockZ();
+		int maxx = minx;
+		int maxy = miny;
+		int maxz = minz;
+		
+		if (tempPos2.getBlockX() < minx)
+			minx = tempPos2.getBlockX();
+		else if (tempPos2.getBlockX() > maxx)
+			maxx = tempPos2.getBlockX();
+		
+		if (tempPos2.getBlockY() < miny)
+			miny = tempPos2.getBlockY();
+		else if (tempPos2.getBlockY() > maxy)
+			maxy = tempPos2.getBlockY();
+		
+		if (tempPos2.getBlockZ() < minz)
+			minz = tempPos2.getBlockZ();
+		else if (tempPos2.getBlockZ() > maxz)
+			maxz = tempPos2.getBlockZ();
+		
+		pos1 = new Vector(minx, miny, minz);
+		pos2 = new Vector(maxx, maxy, maxz);
 	}
 	
 	public void setScheduleInfo(boolean recurring, HashMap<String, Integer> dow)
