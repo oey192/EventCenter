@@ -3,6 +3,7 @@
 
 /event create <name> <numTeams>
 Creates a new event with a name of <name>, sets the number of teams for the event and adds whoever issued the command as the event maker
+Automatically runs /event select <name> for the event that was just created
 
 /event select <name>
 Selects an event to set various properties

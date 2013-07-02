@@ -42,10 +42,22 @@ public class EventCenter extends JavaPlugin
 	
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args)
 	{
-		
-		
-		
-		
+		if (cmd.getName().equalsIgnoreCase("event"))
+		{
+			
+		}
+		else if (cmd.getName().equalsIgnoreCase("tokens"))
+		{
+			
+		}
+		else if (cmd.getName().equalsIgnoreCase("evt"))
+		{
+			
+		}
+		else if (cmd.getName().equalsIgnoreCase("team"))
+		{
+			
+		}
 		
 		return false;
 	}
