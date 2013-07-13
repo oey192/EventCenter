@@ -1,6 +1,7 @@
 package com.andoutay.eventcenter;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.configuration.Configuration;
 
@@ -9,6 +10,8 @@ public class ECConfig
 	private static Configuration config;
 	
 	public static List<String> worldList;
+	public static int tokenID;
+	public static List<Map<?, ?>> flagMsgs;
 	private static EventCenter plugin;
 	
 	ECConfig(EventCenter plugin)
@@ -34,5 +37,7 @@ public class ECConfig
 	public static void loadConfigVals()
 	{
 		worldList = config.getStringList("worlds");
+		tokenID = config.getInt("tokenID");
+		flagMsgs = config.getMapList("flagMsgs");
 	}
 }

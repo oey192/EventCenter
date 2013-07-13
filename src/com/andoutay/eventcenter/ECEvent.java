@@ -1,21 +1,20 @@
 package com.andoutay.eventcenter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
+import java.util.logging.Logger;
 
 public class ECEvent
 {
 	private Logger log = Logger.getLogger("Minecraft");
 	
-	private String name;
+	
+	
+	
+	
+	
+	
+	
+	/*private String name;
 	private Vector pos1, pos2;
 	private Location tempPos1, tempPos2;
 	private boolean running;
@@ -151,7 +150,7 @@ public class ECEvent
 			actualTimeout = specialTimeout;
 			
 		startTime = System.currentTimeMillis();
-	}
+	}*/
 	
 	
 }

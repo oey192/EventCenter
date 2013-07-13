@@ -1,41 +1,97 @@
 
 
 
-/event create <name> <numTeams>
+/event create <name>
 Creates a new event with a name of <name>, sets the number of teams for the event and adds whoever issued the command as the event maker
 Automatically runs /event select <name> for the event that was just created
+
+/event info <name>
+Show information about an event including the creator, 
+
+/event tp <name> [spawnpoint]
+Teleports the player to the default spawn point for an event. If a spawnpoint is specified, the player is teleported to that spawn point for the event instead. The player must specify the name of a team for that event or "spec" to teleport to. Anything else will result in the command failing
 
 /event select <name>
 Selects an event to set various properties
 "none" can be used to deselect the current event. Note that this means no event can be called "none"
 
+/event confirm <name>
+Confirms that the player who enters the command will be running the event at its designated start time. This command can be used up to an hour in advance of the scheduled start time of an event. If it is used outside this time frame, it will return an error. It will likewise return an error if the event does not have a scheduled reoccurring time
+
+/event start <name>
+Starts the event <name>. This also selects this event for any commands below that require an event to be selected (e.g. list players or teams)
+If there are teams, this divides the players up as evenly as possible onto appropriate teams
+
+/event queue add <name>
+Adds the event <name> to the event queue. This can be done whether an event is currently being run or not
+
+/event queue remove <name>
+Removes <name> from the event queue
+
+/event queue list
+Lists the events in the queue (in the order they will run in)
+
+
 Commands that require an event to be selected or return an error
 
-/event pos1
-Sets the first position for the event region
+/event region set <worldGuardRegionName>
+Sets the main encapsulating region for the event
+This will fail if the event has any sub regions
 
-/event pos2
-Sets the second position for the event region
+/event region add <worldGuardRegionName>
+Adds a sub-region to the event. Returns an error if the region is not entirely contained in the encapsulating region for the event
+This will fail if the event has no encapsulating region
 
-/event recurs <yes|no|0|1|true|false>
+/event region remove <worldGuardRegionName>
+Removes a sub-region from the event
+
+/event info
+See /event info <name>
+
+/event recurs (yes|no)
 Sets whether the event recurs or is a one-time event for testing
+Yes is default if neither yes nor no is supplied.
+e.g. "/event recurs" is the same as "/event recurs yes"
 
 /event date add <dayOfWeek> <time>
 e.g. /event date add thursday 8:00PM
 Times are assumed to be in EST and will be converted to server time (CST) by the plugin
 
+/event date remove <dayOfWeek> <time>
+Removes the occurrence or returns an error if it doesn't exist
 
-/event team list
-Lists the teams for the event
+/event date clear
+Removes all occurence dates from the event
 
-/event team <teamName|Spec> setspawn
+/event players list
+List the current players in the event. If the event is not running, this will of course return no results
+
+/team add <name>
+Adds a team to the event
+
+/team remove <name>
+Removes the designated team from the event
+
+/team list
+Lists the teams for the event. If the event is in progress, it includes the number of players on each team
+
+/team sethat <blockID|blockName>
+Sets the blockid for the helmet for the team
+
+/team <teamName|Spec> setspawn
 Sets the spawn point for <teamName> to the your current location (including the direction you're facing)
+
+/team <name> maxplayers <#|reset>
+Sets the maximum size for the team <name>. If "reset" is specified as the number, it resets it so the team will be the same size as all other teams that do not have a set size
+
+/team <team> ignorescramble (off)
+If autoscramble is on for the event, this team will be excluded from any scrambling of teams
 
 /event setlength <minutes>
 Sets the default round length for the event
 If set to 0, the event will run until the EC tells it to stop or until other end conditions are met
 
-/event numLives <num>
+/event numlives <num>
 Set the maximum number of lives a player can have before being moved to spectate
 Setting this to 0 will cause players to have unlimited lives
 Negative numbers are not allowed
@@ -43,23 +99,30 @@ Negative numbers are not allowed
 /event description <description>
 Add a description for the event. If a description is already set, using this command again will overwrite the existing description
 
+/event setscramble (on|off)
+Tells the event whether to autoscramble the teams during rounds or to leave them be
+If the event has no teams or has only one team, this has no effect
+On is default, but can be specified if desired. Off must be specified if scramble needs to be turned off
 
 
-/event flag add <flagName> [win] [points]
+
+All commands below throw an error if the regionName specified doesn't exist
+
+/event <regionName> add <flagName> [win] [points]
 Add <flagName> to the event. If "win" is specified, the event will be considered over when this flag triggers and the player or team that triggers the flag will win the event
 If points are specified, that number of points will be given to the player that triggers the flag. Negative points are allowed
 
-/event flag setWin <flagName> [yes|no]
+/event <regionName> setwin <flagName> [yes|no]
 Yes or no is optional. If neither is present, yes is assumed.
 Makes <flagName> a winnning flag if "yes", makes it a normal flag if "no"
 
-/event flag setPoints <flagName> <points>
+/event <regionName> setpoints <flagName> <points>
 Sets the number of points the flag should give to the trigger-er. Negative values are allowed
 
-/event flag remove <flagName>
+/event <regionName> remove <flagName>
 Removes <flagName> from the event.
 
-/event flag setMessage <flagName> <message>
+/event <regionName> message <flagName> <message>
 Sets the message to show to players when the flag is triggered. Every flag will has a default message, but this command can be used to create a custom one.
 $1 may be used to represent the name of the player who triggered the event.
 $2 may be used to represent the name of the player or block effected by the event
@@ -190,6 +253,9 @@ e.g. when there are less than X seconds left in the round, start listing how man
 Capture the Flag
 Is it implausible to make subregions for green areas that would restrict bow usage to those areas?
 
+
+Royal Rumble
+Need ability to keep track of dominations
 
 
 

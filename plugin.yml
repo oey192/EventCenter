@@ -1,6 +1,6 @@
 name: EventCenter
 main: com.andoutay.eventcenter.EventCenter
-version: 0.0.1
+version: 0.0.2
 description: >
              EventCenter adds a host of functionality for making and running events such as regioning, spawn points, teams, and event specific chat
 

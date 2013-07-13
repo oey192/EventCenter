@@ -1,1 +1,7 @@
 worlds: [events]
+tokenID: 95
+
+flagMsgs:
+  flag1: stuff
+  flag2: stuff
+  flag3: moreStuff
