@@ -60,15 +60,16 @@ Removes <player> from the list of people allowed to run the event
 
 Commands that require an event to be selected or return an error
 
-/event region set <worldGuardRegionName>
+/event region set <worldGuardRegionName> [world]
 Sets the main encapsulating region for the event
 This will fail if the event has any sub regions
+world should only need to be specified if more than one region with the same name exists across multiple worlds
 
-/event region add <worldGuardRegionName>
+/event region add <worldGuardRegionName> [world]
 Adds a sub-region to the event. Returns an error if the region is not entirely contained in the encapsulating region for the event
 This will fail if the event has no encapsulating region
 
-/event region remove <worldGuardRegionName>
+/event region remove <worldGuardRegionName> [world]
 Removes a sub-region from the event
 
 /event info

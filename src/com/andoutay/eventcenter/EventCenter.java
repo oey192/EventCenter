@@ -1,5 +1,6 @@
 package com.andoutay.eventcenter;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
@@ -17,6 +18,7 @@ public class EventCenter extends JavaPlugin
 	public ECEventHandler evtHandler;
 	public ECCommands cmdManager;
 	public static Server server;
+	public HashMap<String, ECEvent> events;
 	
 	public void onLoad()
 	{
@@ -32,12 +34,17 @@ public class EventCenter extends JavaPlugin
 		ECConfig.onEnable();
 		server.getPluginManager().registerEvents(evtHandler, this);
 		
+		events = new HashMap<String, ECEvent>();
+		evtManager.loadEvents();
+		
 		log.info(logPref + "Enabled");
 	}
 	
 	public void onDisable()
 	{
-		
+		evtManager.saveEvents();
+		events.clear();
+		events = null;
 		
 		log.info(logPref + "Disabled");
 	}
@@ -88,12 +95,6 @@ public class EventCenter extends JavaPlugin
 				return cmdManager.addOp(s, args);
 			else if (args.length == 3 && args[0].equalsIgnoreCase("remop"))
 				return cmdManager.removeOp(s, args);
-			else if (args.length == 3 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("set"))
-				return cmdManager.setMainRegion(s, args);
-			else if (args.length == 3 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("add"))
-				return cmdManager.addSubRegion(s, args);
-			else if (args.length == 3 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("remove"))
-				return cmdManager.removeSubRegion(s, args);
 			else if (args.length == 4 && args[0].equalsIgnoreCase("date"))
 				return cmdManager.addRemDate(s, args);
 			else if (args.length == 4 && args[1].equalsIgnoreCase("setpoints"))
@@ -110,6 +111,12 @@ public class EventCenter extends JavaPlugin
 				return cmdManager.setFlagWin(s, args);
 			else if (args.length >= 3 && args.length <= 4 && args[1].equalsIgnoreCase("switchteam"))
 				return cmdManager.setFlagSwitchTeam(s, args);
+			else if (args.length >= 3 && args.length <= 4 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("set"))
+				return cmdManager.setMainRegion(s, args);
+			else if (args.length >= 3 && args.length <= 4 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("add"))
+				return cmdManager.addSubRegion(s, args);
+			else if (args.length >= 3 && args.length <= 4 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("remove"))
+				return cmdManager.removeSubRegion(s, args);
 			else if (args.length >= 3 && args.length <= 5 && args[1].equalsIgnoreCase("add"))
 				return cmdManager.addRegionFlag(s, args);
 			else if (args.length >= 2 && args[0].equalsIgnoreCase("description"))

@@ -24,5 +24,12 @@ public class ECEventManager
 	public void loadEvents()
 	{
 		//load events from file
+		//foreach thing in file
+		//plugin.events.put(name, new Event(lots, of, stuff))
+	}
+	
+	public void saveEvents()
+	{
+		//you know what to do
 	}
 }

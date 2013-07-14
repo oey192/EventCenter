@@ -2,9 +2,9 @@ package com.andoutay.eventcenter;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.entity.Player;
@@ -22,7 +22,7 @@ public class ECEvent
 	private List<Player> operators;
 	private ProtectedRegion mainRegion;
 	private List<ProtectedRegion> subRegions;
-	private HashMap<String, List<ItemStack>> teams;
+	private HashMap<String, ECTeam> teams;
 	private List<ECFlag> flags;
 	private List<ECRecurDate> occurrences;
 	private int defRoundLen;
@@ -35,13 +35,13 @@ public class ECEvent
 		this.creator = creator;
 		operators = new ArrayList<Player>();
 		operators.add(creator);
-		teams = new HashMap<String, List<ItemStack>>();
+		teams = new HashMap<String, ECTeam>();
 		running = false;
 		defRoundLen = 0;
 		roundLen = defRoundLen;
 	}
 	
-	ECEvent(String name, Player creator, List<Player> operators, ProtectedRegion mainRegion, List<ProtectedRegion> subRegions, HashMap<String, List<ItemStack>> teams, List<ECFlag> flags, List<ECRecurDate> occurrences, int defRoundLen)
+	ECEvent(String name, Player creator, List<Player> operators, ProtectedRegion mainRegion, List<ProtectedRegion> subRegions, HashMap<String, ECTeam> teams, List<ECFlag> flags, List<ECRecurDate> occurrences, int defRoundLen)
 	{
 		this.name = name;
 		this.creator = creator;
@@ -56,6 +56,21 @@ public class ECEvent
 		this.running = false;
 	}
 	
+	public void setMainRegion(ProtectedRegion rg)
+	{
+		mainRegion = rg;
+	}
+	
+	public void addSubRegion(ProtectedRegion rg)
+	{
+		if (!subRegions.contains(rg)) subRegions.add(rg);
+	}
+	
+	public void removeSubRegion(ProtectedRegion rg)
+	{
+		if (subRegions.contains(rg)) subRegions.remove(subRegions.indexOf(rg));
+	}
+	
 	public void setRoundLen(int len)
 	{
 		roundLen = (len < 0) ? defRoundLen : len;
@@ -63,12 +78,14 @@ public class ECEvent
 	
 	public void addItem(String name, ItemStack item)
 	{
+		/*fix later
 		if (teams.get(name) == null) teams.put(name, new ArrayList<ItemStack>());
-		teams.get(name).add(item);
+		teams.get(name).add(item);*/
 	}
 	
 	public void removeItem(String name, ItemStack item)
 	{
+		/*
 		if (teams.get(name) == null) return;
 		
 		Iterator<ItemStack> iter = teams.get(name).iterator();
@@ -79,6 +96,7 @@ public class ECEvent
 			if (temp.getType().equals(item.getType()))
 				iter.remove();
 		}
+		*/
 	}
 	
 	/*private String name;

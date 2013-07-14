@@ -1,0 +1,69 @@
+events:
+  Virus:
+    creator: oey192
+    operators: [oey192, FirezFury]
+    mainRegionName: virusmainregion
+    subRegionNames: [name1, name2, etc]
+    teams:
+      pumpkins:
+        items: [idk, how, itemstacks, are, stored]
+        x: 23
+        y: 22
+        z: -274
+        world: world
+        pitch: 23.212
+        yaw: 84.37
+      melons: [but, I, can, make, yaml, lists]
+    flags:
+      detectWhack:
+        win: false
+        switchTeam: true
+        points: 1
+        msg: '$2 has caught the disease from $1'
+    occurrences:
+        thursday: 1700
+        saturday: 1830
+    defRoundLen: 0
+    roundLen: 120
+  CTF:
+    creator:VickiCHIZ
+    operators: [FirezFury, VickiCHIZ]
+    mainRegionName: ctfregion
+    subRegionName: [weee, stuff, nope]
+    teams:
+      gold: [stuff, stuff]
+      lapis: [more, stuff, and, stuff]
+    flags:
+      playerDeath:
+        win: false
+        switchTeam: false
+        points: -1
+        msg: '$2 has dropped the flag!'
+      blockBreak:
+        win: false
+        switchTeam: false
+        points: 1
+        blockID: 27
+        msg: '$1 has taken a gold flag'
+      blockBreak:
+        win: false
+        switchTeam: false
+        points: 1
+        blockID: 39
+        msg: '$1 has taken a lapis flag'
+      blockPlace:
+        win: false
+        switchTeam: false
+        points: 5
+        blockID: 27
+        msg: '$1 has captured a gold flag'
+      blockPlace:
+        win: false
+        switchTeam: false
+        points: 5
+        blockID: 39
+        msg: '$1 has captured a lapis flag'
+    occurrences:
+    defRoundLen: 600
+    roundLen: 600
+
