@@ -1,18 +1,85 @@
 package com.andoutay.eventcenter;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.HashMap;
 import java.util.logging.Logger;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class ECEvent
 {
 	private Logger log = Logger.getLogger("Minecraft");
 	
 	
+	private String name;
+	private Player creator;
+	private List<Player> operators;
+	private ProtectedRegion mainRegion;
+	private List<ProtectedRegion> subRegions;
+	private HashMap<String, List<ItemStack>> teams;
+	private List<ECFlag> flags;
+	private List<ECRecurDate> occurrences;
+	private int defRoundLen;
+	private int roundLen;
+	private boolean running;
 	
+	ECEvent(String name, Player creator)
+	{
+		this.name = name;
+		this.creator = creator;
+		operators = new ArrayList<Player>();
+		operators.add(creator);
+		teams = new HashMap<String, List<ItemStack>>();
+		running = false;
+		defRoundLen = 0;
+		roundLen = defRoundLen;
+	}
 	
+	ECEvent(String name, Player creator, List<Player> operators, ProtectedRegion mainRegion, List<ProtectedRegion> subRegions, HashMap<String, List<ItemStack>> teams, List<ECFlag> flags, List<ECRecurDate> occurrences, int defRoundLen)
+	{
+		this.name = name;
+		this.creator = creator;
+		this.operators = operators;
+		this.mainRegion = mainRegion;
+		this.subRegions = subRegions;
+		this.teams = teams;
+		this.flags = flags;
+		this.occurrences = occurrences;
+		this.defRoundLen = defRoundLen;
+		this.roundLen = defRoundLen;
+		this.running = false;
+	}
 	
+	public void setRoundLen(int len)
+	{
+		roundLen = (len < 0) ? defRoundLen : len;
+	}
 	
+	public void addItem(String name, ItemStack item)
+	{
+		if (teams.get(name) == null) teams.put(name, new ArrayList<ItemStack>());
+		teams.get(name).add(item);
+	}
 	
+	public void removeItem(String name, ItemStack item)
+	{
+		if (teams.get(name) == null) return;
+		
+		Iterator<ItemStack> iter = teams.get(name).iterator();
+		ItemStack temp;
+		while (iter.hasNext())
+		{
+			temp = iter.next();
+			if (temp.getType().equals(item.getType()))
+				iter.remove();
+		}
+	}
 	
 	/*private String name;
 	private Vector pos1, pos2;

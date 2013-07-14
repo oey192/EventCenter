@@ -5,3 +5,7 @@ flagMsgs:
   flag1: stuff
   flag2: stuff
   flag3: moreStuff
+  
+eventDefaults:
+  roundLen: 600
+  colors: [2,3,4,5,6,7,9,10,11,12,13,14]

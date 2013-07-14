@@ -50,10 +50,18 @@ public class EventCenter extends JavaPlugin
 				return cmdManager.eventHelp(s);
 			else if (args.length == 1 && args[0].equalsIgnoreCase("version"))
 				return cmdManager.showVersion(s);
-			else if (args.length == 1 && args[0].equalsIgnoreCase("reload"))
+			else if (args.length == 1 && args[0].equalsIgnoreCase("join"))
+				return cmdManager.joinEvent(s);
+			else if (args.length == 1 && args[0].equalsIgnoreCase("stop"))
+				return cmdManager.stopEvent(s);
+			else if (args.length == 2 && args[0].equalsIgnoreCase("reload") && args[1].equalsIgnoreCase("events"))
 				return cmdManager.reloadEvents(s);
+			else if (args.length == 2 && args[0].equalsIgnoreCase("reload") && args[1].equalsIgnoreCase("config"))
+				return cmdManager.reloadConfig(s);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("create"))
 				return cmdManager.createEvent(s, args);
+			else if (args.length == 2 && args[0].equalsIgnoreCase("remove"))
+				return cmdManager.removeEvent(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("confirm"))
 				return cmdManager.confirmEvent(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("start"))
@@ -62,26 +70,52 @@ public class EventCenter extends JavaPlugin
 				return cmdManager.queueNext(s);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("queue") && args[1].equalsIgnoreCase("list"))
 				return cmdManager.listQueue(s);
+			else if (args.length == 2 && args[0].equalsIgnoreCase("defaultlength"))
+				return cmdManager.setDefaultRoundLength(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("setlength"))
 				return cmdManager.setRoundLength(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("numlives"))
 				return cmdManager.setNumLives(s, args);
-			else if (args.length == 3 && args[0].equalsIgnoreCase("queue"))
-				return cmdManager.modQueue(s, args);
-			else if (args.length == 3 && args[0].equalsIgnoreCase("region"))
-				return cmdManager.modRegions(s, args);
+			else if (args.length == 3 && args[0].equalsIgnoreCase("queue") && args[1].equalsIgnoreCase("add"))
+				return cmdManager.enQueue(s, args);
+			else if (args.length == 3 && args[0].equalsIgnoreCase("queue") && args[1].equalsIgnoreCase("remove"))
+				return cmdManager.deQueue(s, args);
+			else if (args.length == 3 && args[1].equalsIgnoreCase("remove"))
+				return cmdManager.delRegionFlag(s, args);
+			else if (args.length == 3 && args[0].equalsIgnoreCase("remove") && args[1].equalsIgnoreCase("regions"))
+				return cmdManager.removeEventRegions(s, args);
+			else if (args.length == 3 && args[0].equalsIgnoreCase("addop"))
+				return cmdManager.addOp(s, args);
+			else if (args.length == 3 && args[0].equalsIgnoreCase("remop"))
+				return cmdManager.removeOp(s, args);
+			else if (args.length == 3 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("set"))
+				return cmdManager.setMainRegion(s, args);
+			else if (args.length == 3 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("add"))
+				return cmdManager.addSubRegion(s, args);
+			else if (args.length == 3 && args[0].equalsIgnoreCase("region") && args[1].equalsIgnoreCase("remove"))
+				return cmdManager.removeSubRegion(s, args);
 			else if (args.length == 4 && args[0].equalsIgnoreCase("date"))
 				return cmdManager.addRemDate(s, args);
+			else if (args.length == 4 && args[1].equalsIgnoreCase("setpoints"))
+				return cmdManager.setFlagPoints(s, args);
 			else if (args.length >= 1 && args.length <= 2 && args[0].equalsIgnoreCase("info"))
 				return cmdManager.getEventInfo(s, args);
-			else if (args.length >= 1 && args.length <=2 && args[0].equalsIgnoreCase("setscramble"))
+			else if (args.length >= 1 && args.length <= 2 && args[0].equalsIgnoreCase("setscramble"))
 				return cmdManager.setScramble(s, args);
 			else if (args.length >= 3 && args.length <= 4 && args[0].equalsIgnoreCase("tp"))
 				return cmdManager.tp(s, args);
-			else if (args.length >= 4 && args.length <= 6 && args[1].equalsIgnoreCase("add"))
+			else if (args.length >= 3 && args.length <= 4 && args[0].equalsIgnoreCase("queue") && (args[1].equalsIgnoreCase("announce") || args[1].equalsIgnoreCase("bcast") || args[1].equalsIgnoreCase("broadcast")))
+				return cmdManager.announceQueue(s, args);
+			else if (args.length >= 3 && args.length <= 4 && args[1].equalsIgnoreCase("setwin"))
+				return cmdManager.setFlagWin(s, args);
+			else if (args.length >= 3 && args.length <= 4 && args[1].equalsIgnoreCase("switchteam"))
+				return cmdManager.setFlagSwitchTeam(s, args);
+			else if (args.length >= 3 && args.length <= 5 && args[1].equalsIgnoreCase("add"))
 				return cmdManager.addRegionFlag(s, args);
 			else if (args.length >= 2 && args[0].equalsIgnoreCase("description"))
 				return cmdManager.setDescription(s, args);
+			else if (args.length >= 4 && args[1].equalsIgnoreCase("message"))
+				return cmdManager.setFlagMessage(s, args);
 		}
 		else if (cmd.getName().equalsIgnoreCase("tokens"))
 		{
@@ -90,10 +124,20 @@ public class EventCenter extends JavaPlugin
 		}
 		else if (cmd.getName().equalsIgnoreCase("evt"))
 		{
-			if (args.length == 1 && args[0].equalsIgnoreCase("help"))
+			if (args.length == 0)
 				return cmdManager.evtHelp(s);
-			else if (args.length == 1 && args[0].equalsIgnoreCase("version"))
-				return cmdManager.reloadConfig(s);
+			else
+				return cmdManager.evtChat(s, args);
+		}
+		else if (cmd.getName().equalsIgnoreCase("ec"))
+		{
+			if (args.length > 0)
+				return cmdManager.ecChat(s, args);
+		}
+		else if (cmd.getName().equalsIgnoreCase("ecall"))
+		{
+			if (args.length > 0)
+				return cmdManager.ecAllChat(s, args);
 		}
 		else if (cmd.getName().equalsIgnoreCase("team"))
 		{
@@ -107,11 +151,19 @@ public class EventCenter extends JavaPlugin
 				return cmdManager.removeTeam(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("sethat"))
 				return cmdManager.setTeamHat(s, args);
+			else if (args.length == 2 && args[0].equalsIgnoreCase("setcolor"))
+				return cmdManager.setChatColor(s, args);
 			else if (args.length == 2 && args[1].equalsIgnoreCase("setspawn"))
 				return cmdManager.setTeamSpawn(s, args);
+			else if (args.length == 2 && args[1].equalsIgnoreCase("listitems"))
+				return cmdManager.listItemsForTeam(s, args);
 			else if (args.length == 3 && args[1].equalsIgnoreCase("maxplayers"))
 				return cmdManager.setTeamMaxplayers(s, args);
-			else if (args.length == 3 && args[1].equalsIgnoreCase("ignorescramble"))
+			else if (args.length == 4 && args[1].equalsIgnoreCase("additem"))
+				return cmdManager.addItemToTeam(s, args);
+			else if (args.length == 4 && args[1].equalsIgnoreCase("removeitem"))
+				return cmdManager.removeItemFromTeam(s, args);
+			else if (args.length >= 2 && args.length <= 3 && args[1].equalsIgnoreCase("ignorescramble"))
 				return cmdManager.teamShouldScramble(s, args);
 		}
 		

@@ -1,8 +1,9 @@
 name: EventCenter
 main: com.andoutay.eventcenter.EventCenter
-version: 0.0.2
+version: 0.0.4
 description: >
              EventCenter adds a host of functionality for making and running events such as regioning, spawn points, teams, and event specific chat
+depends: [WorldGuard]
 
 commands:
   event:
@@ -13,8 +14,14 @@ commands:
     description: Redeem tokens for winning events or view how many tokens you have
     usage: /<command> [view|claim (#)]
   evt:
-    description: Edit settings regarding Event Chat
+    description: Edit settings regarding Event Chat, talk to entire event
     usage: /<command> [viewall [on|off]|command [on|off]]
+  ec:
+    description: Talk with other event coordinators
+    usage: /<command> <message>
+  ecall:
+    description: Broadcast messages to entire event
+    usage: /<command> <message>
   team:
     description: Manage teams during events
     usage: Use /<command> help for info on how to use this command
@@ -24,34 +31,105 @@ permissions:
     description: Gives access to all EventCenter commands
     default: false
     children:
-      eventcenter.mod.*: true
-      eventcenter.list: true
+      eventcenter.event.*: true
       eventcenter.join: true
       eventcenter.loginInfo: true
       eventcenter.queue.*: true
       eventcenter.chat.*: true
-      eventcenter.allchat: true
+      eventcenter.tp: true
       eventcenter.version: true
       eventcenter.reload: true
       eventcenter.help.*: true
-  eventcenter.mod.*:
+  eventcenter.event.*:
     description: Gives access to creation, deletion and editing of events
     default: false
     children:
-      eventcenter.mod.new: true
-      eventcenter.mod.edit: true
-      eventcenter.mod.remove: true
-  eventcenter.mod.new:
-    description: Allows the player to create new events/regions
+      eventcenter.event.new: true
+      eventcenter.event.edit: true
+      eventcenter.event.remove: true
+      eventcenter.event.info: true
+      eventcenter.event.team.*: true
+      eventcenter.event.flag.*: true
+      eventcenter.event.list: true
+      eventcenter.event.run: true
+      eventcenter.event.op.*: true
+      eventcenter.event.region.*: true
+  eventcenter.event.new:
+    description: Allows the player to create new events
     default: false
-  eventcenter.mod.edit:
-    description: Allows the player to edit existing events/regions
+  eventcenter.event.edit:
+    description: Allows the player to edit existing events
     default: false
-  eventcenter.mod.remove:
-    description: Allows the player to delete an event/region
+  eventcenter.event.remove:
+    description: Allows the player to delete an event
     default: false
-  eventcenter.list:
+  eventcenter.event.info:
+    description: Allows the player to view info about any given event
+  eventcenter.event.team.*:
+    description: Allows modifying of teams for an event
+    default: false
+    children:
+      eventcenter.event.team.add: true
+      eventcenter.event.team.remove: true
+      eventcenter.event.team.edit: true
+      eventcenter.event.team.list: true
+  eventcenter.event.team.add:
+    description: Allows the player to add a team to an event
+    default: false
+  eventcenter.event.team.remove:
+    description: Allows the player to remove a team from an event
+    default: false
+  eventcenter.event.team.edit:
+    description: Allows the player to edit team details
+    default: false
+  eventcenter.event.team.list:
+    description: Allows the player to see the list of teams for an event
+    default: false
+  eventcenter.event.flag.*:
+    description: Gives access to all region flag based commands
+    default: false
+    children:
+      eventcenter.event.flag.add: true
+      eventcenter.event.flag.remove: true
+      eventcenter.event.flag.edit: true
+  eventcenter.event.flag.add:
+    description: Allows the player to add a flag to a region of an event
+    default: false
+  eventcenter.event.flag.remove:
+    description: Allows the player to remove a flag from a region of an event
+    default: false
+  eventcenter.event.flag.edit:
+    description: Allows the player to edit properties of a flag for a region of an event
+    default: false
+  eventcenter.event.list:
     description: Shows a list of currently running and queued events
+    default: false
+  eventcenter.event.run:
+    description: Allows the player to run an event
+    default: false
+  eventcenter.event.op.*:
+    description: Allows the player to add and remove operators to and from an event
+    default: false
+    children:
+      eventcenter.event.op.add: true
+      eventcenter.event.op.remove: true
+  eventcenter.event.op.add:
+    description: Allows the player to add operators to an event
+    default: false
+  eventcenter.event.op.remove:
+    description: Allows the player to remove operators from an event
+    default: false
+  eventcenter.event.region.*:
+    description: Allows the player to modify which regions belong to an event
+    default: false
+    children:
+      eventcenter.event.region.add: true
+      eventcenter.event.region.remove: true
+  eventcenter.event.region.add:
+    description: Allows the player to add regions to an event
+    default: false
+  eventcenter.event.region.remove:
+    description: Allows the player to remove regions from an event
     default: false
   eventcenter.loginInfo:
     description: Shows the player information about current events and scheduled events on login
@@ -66,8 +144,8 @@ permissions:
       eventcenter.queue.add: true
       eventcenter.queue.remove: true
       eventcenter.queue.next: true
-      eventcenter.queue.schedule: true
       eventcenter.queue.announce: true
+      eventcenter.queue.view: true
   eventcenter.queue.add:
     description: Allows the player to add an event to the queue
     default: false
@@ -77,11 +155,11 @@ permissions:
   eventcenter.queue.next:
     description: Allows the player to end the current event (if one is running) and start the next event in the queue
     default: false
-  eventcenter.queue.schedule:
-    description: Allows the player to schedule an event at some time in the future
-    default: false
   eventcenter.queue.announce:
     description: Allows the player to tell the plugin to announce the next event in the queue
+    default: false
+  eventcenter.queue.view:
+    description: Allows the player to view a list of the events in the event queue
     default: false
   eventcenter.chat.*:
     description: Allows the player to use and see event chat
@@ -89,20 +167,37 @@ permissions:
     children:
       eventcenter.chat.send: true
       eventcenter.chat.receive: true
+      eventcenter.chat.allchat: true
+      eventcenter.chat.ec: true
   eventcenter.chat.send:
     description: Allows the player to send event chat messages when in events
     default: false
   eventcenter.chat.receive:
     description: Allows the player to see event chat when in events
     default: false
-  eventcenter.allchat:
+  eventcenter.chat.allchat:
     description: Allows the player to send in-event announcements
+    default: false
+  eventcenter.chat.ec:
+    description: Allows the player to send and view Event Coordinator-only chat
+    default: false
+  eventcenter.tp:
+    description: Allows the player to teleport to various spawn points for events
     default: false
   eventcenter.version:
     description: Allows the player to check the version of the plugin
     default: false
-  eventcenter.reload:
+  eventcenter.reload.*:
     description: Allows the player to reload the config and events.yml
+    default: false
+    children:
+      eventcenter.reload.events: true
+      eventcenter.reload.config: true
+  eventcenter.reload.events:
+    description: Allows the player to reload events.yml
+    default: false
+  eventcenter.reload.config:
+    description: Allows the player to reload the config
     default: false
   eventcenter.help.*:
     description: Allows the player to view all help

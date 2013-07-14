@@ -10,7 +10,8 @@ public class ECConfig
 	private static Configuration config;
 	
 	public static List<String> worldList;
-	public static int tokenID;
+	public static List<Integer> colorList;
+	public static int tokenID, roundLen;
 	public static List<Map<?, ?>> flagMsgs;
 	private static EventCenter plugin;
 	
@@ -38,6 +39,8 @@ public class ECConfig
 	{
 		worldList = config.getStringList("worlds");
 		tokenID = config.getInt("tokenID");
+		roundLen = config.getInt("eventDefaults.roundLen");
 		flagMsgs = config.getMapList("flagMsgs");
+		colorList = config.getIntegerList("eventDefaults.colors");
 	}
 }
