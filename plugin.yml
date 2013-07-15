@@ -1,9 +1,9 @@
 name: EventCenter
 main: com.andoutay.eventcenter.EventCenter
-version: 0.0.5
+version: 0.0.7b1
 description: >
              EventCenter adds a host of functionality for making and running events such as regioning, spawn points, teams, and event specific chat
-depends: [WorldGuard]
+depends: [WorldGuard, WorldEdit]
 
 commands:
   event:

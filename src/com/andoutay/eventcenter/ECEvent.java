@@ -3,7 +3,6 @@ package com.andoutay.eventcenter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -18,32 +17,37 @@ public class ECEvent
 	
 	
 	private String name;
+	public String description;
 	private Player creator;
 	private List<Player> operators;
-	private ProtectedRegion mainRegion;
+	public ProtectedRegion mainRegion;
 	private List<ProtectedRegion> subRegions;
 	private HashMap<String, ECTeam> teams;
 	private List<ECFlag> flags;
 	private List<ECRecurDate> occurrences;
-	private int defRoundLen;
-	private int roundLen;
+	public int defRoundLen;
+	public int roundLen;
 	private boolean running;
+	private boolean rip;
 	
 	ECEvent(String name, Player creator)
 	{
 		this.name = name;
+		description = "";
 		this.creator = creator;
 		operators = new ArrayList<Player>();
 		operators.add(creator);
 		teams = new HashMap<String, ECTeam>();
 		running = false;
+		rip = false;
 		defRoundLen = 0;
 		roundLen = defRoundLen;
 	}
 	
-	ECEvent(String name, Player creator, List<Player> operators, ProtectedRegion mainRegion, List<ProtectedRegion> subRegions, HashMap<String, ECTeam> teams, List<ECFlag> flags, List<ECRecurDate> occurrences, int defRoundLen)
+	ECEvent(String name, String description, Player creator, List<Player> operators, ProtectedRegion mainRegion, List<ProtectedRegion> subRegions, HashMap<String, ECTeam> teams, List<ECFlag> flags, List<ECRecurDate> occurrences, int defRoundLen)
 	{
 		this.name = name;
+		this.description = description;
 		this.creator = creator;
 		this.operators = operators;
 		this.mainRegion = mainRegion;
@@ -56,9 +60,19 @@ public class ECEvent
 		this.running = false;
 	}
 	
-	public void setMainRegion(ProtectedRegion rg)
+	public String getName()
 	{
-		mainRegion = rg;
+		return name;
+	}
+	
+	public String getCreator()
+	{
+		return creator.getDisplayName();
+	}
+	
+	public boolean rip()
+	{
+		return rip;
 	}
 	
 	public void addSubRegion(ProtectedRegion rg)
@@ -97,6 +111,39 @@ public class ECEvent
 				iter.remove();
 		}
 		*/
+	}
+	
+	public void startEvent()
+	{
+		this.running = true;
+		startRound();
+	}
+	
+	//If teams are not set up, sets up teams and then starts event clock (if necessary)
+	//Also announces to players in the event that it has begun
+	public void startRound()
+	{
+		rip = true;
+	}
+	
+	//Stops the clock, resets it, displays message to all participant that round is over, stops tracking of events, displays winners to participants
+	//leaves teams intact
+	public void stopRound()
+	{
+		
+		
+		rip = false;
+	}
+	
+	public void stopEvent()
+	{
+		stopRound();
+		this.running = false;
+	}
+	
+	public boolean isRunning()
+	{
+		return running;
 	}
 	
 	/*private String name;

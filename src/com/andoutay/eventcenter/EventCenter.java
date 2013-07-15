@@ -1,6 +1,5 @@
 package com.andoutay.eventcenter;
 
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
@@ -18,7 +17,6 @@ public class EventCenter extends JavaPlugin
 	public ECEventHandler evtHandler;
 	public ECCommands cmdManager;
 	public static Server server;
-	public HashMap<String, ECEvent> events;
 	
 	public void onLoad()
 	{
@@ -34,7 +32,6 @@ public class EventCenter extends JavaPlugin
 		ECConfig.onEnable();
 		server.getPluginManager().registerEvents(evtHandler, this);
 		
-		events = new HashMap<String, ECEvent>();
 		evtManager.loadEvents();
 		
 		log.info(logPref + "Enabled");
@@ -43,8 +40,6 @@ public class EventCenter extends JavaPlugin
 	public void onDisable()
 	{
 		evtManager.saveEvents();
-		events.clear();
-		events = null;
 		
 		log.info(logPref + "Disabled");
 	}
@@ -61,6 +56,14 @@ public class EventCenter extends JavaPlugin
 				return cmdManager.joinEvent(s);
 			else if (args.length == 1 && args[0].equalsIgnoreCase("stop"))
 				return cmdManager.stopEvent(s);
+			else if (args.length == 1 && args[0].equalsIgnoreCase("endround"))
+				return cmdManager.endRound(s);
+			else if (args.length == 1 && args[0].equalsIgnoreCase("list"))
+				return cmdManager.listEvents(s);
+			else if (args.length == 1 && args[0].equalsIgnoreCase("cancel"))
+				return cmdManager.cancelPending(s);
+			else if (args.length == 1 && args[0].equalsIgnoreCase("apply"))
+				return cmdManager.approvePending(s);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("reload") && args[1].equalsIgnoreCase("events"))
 				return cmdManager.reloadEvents(s);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("reload") && args[1].equalsIgnoreCase("config"))
@@ -69,6 +72,8 @@ public class EventCenter extends JavaPlugin
 				return cmdManager.createEvent(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("remove"))
 				return cmdManager.removeEvent(s, args);
+			else if (args.length == 2 && args[0].equalsIgnoreCase("select"))
+				return cmdManager.selectEvent(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("confirm"))
 				return cmdManager.confirmEvent(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("start"))
@@ -152,6 +157,8 @@ public class EventCenter extends JavaPlugin
 				return cmdManager.teamHelp(s);
 			else if (args.length == 1 && args[0].equalsIgnoreCase("list"))
 				return cmdManager.listTeams(s, args);
+			else if (args.length == 1 && args[0].equalsIgnoreCase("scramble"))
+				return cmdManager.scrambleTeams(s);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("add"))
 				return cmdManager.addTeam(s, args);
 			else if (args.length == 2 && args[0].equalsIgnoreCase("remove"))

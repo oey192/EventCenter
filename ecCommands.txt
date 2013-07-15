@@ -6,10 +6,19 @@ Creates a new event with a name of <name>, sets the number of teams for the even
 Automatically runs /event select <name> for the event that was just created
 
 /event remove <name>
-Deletes an event. This command must be entered twice for security
+Deletes an event. /event apply must be used to confirm
 
 /event remove regions <name>
 Deletes regions associated with an event. This should be run before an event is deleted as it will not function afterwards
+
+/event cancel
+Cancels a pending command that requires confirmation
+
+/event apply
+Approves a pending command.
+
+/event list
+List all events
 
 /event info <name>
 Show information about an event including the creator, 
@@ -24,13 +33,18 @@ Selects an event to set various properties
 /event confirm <name>
 Confirms that the player who enters the command will be running the event at its designated start time. This command can be used up to an hour in advance of the scheduled start time of an event. If it is used outside this time frame, it will return an error. It will likewise return an error if the event does not have a scheduled reoccurring time
 
-/event start <name>
+/event start [name]
 Starts the event <name>. This also selects this event for any commands below that require an event to be selected (e.g. list players or teams)
 If there are teams, this divides the players up as evenly as possible onto appropriate teams
+If an event is already running and no rounds are in progress, the name field doesn't need to be used. It will then start the next round
+
+/event endround
+Ends the current round of whatever event is running
+If no event is running, this returns an error
 
 /event stop
 Stops the current event.
-This command must be entered twice for security
+/event apply must be used to confirm
 
 /event queue add <name>
 Adds the event <name> to the event queue. This can be done whether an event is currently being run or not
@@ -42,7 +56,7 @@ Removes <name> from the event queue
 Lists the events in the queue (in the order they will run in)
 
 /event queue next
-Ends the current event (whether it was in the queue or not) and goes to the next event in the queue. This command must be typed in twice for confirmation
+Ends the current event (whether it was in the queue or not) and goes to the next event in the queue. /event apply must be used to confirm
 
 /event queue bcast [time]
 Alerts the server that the next queued event will begin in 5 minutes, or, if [time] is specified, in [time] minutes. This will not actually cause that event to start at that time
@@ -102,6 +116,9 @@ Removes the designated team from the event
 /team list
 Lists the teams for the event. If the event is in progress, it includes the number of players on each team
 
+/team scramble
+Mixes up who is on what team. This will return an error if there are 0 or 1 teams
+
 /team sethat <blockID|blockName>
 Sets the blockid for the helmet for the team
 
@@ -122,7 +139,7 @@ Running /team <team> ignorescramble will disable scrambling for the specified te
 Adds <quantity> of an item to the default set of items a player will have on them when they spawn on this team. Any armor items specified will be auto-equipped. If more than one item is specified for a given armor slot, the first one encountered by the plugin will be assigned
 
 /team <name> removeitem <itemID|itemName>
-Removes all of <itemID> from the list of items to give to a player upon spawning
+Remo`ves all of <itemID> from the list of items to give to a player upon spawning
 
 /team <name> listitems
 Shows a list of which items and how many of each are given to a player on that team when they spawn
@@ -264,6 +281,10 @@ Perhaps just /bcast and then event specific?
 Is it possible to cause a redstone event to happen when EC types /event start ?
 
 Perhaps add a lobby spawn, or just make the lobby area the spec area
+
+
+Never allow sub-region of a sub-region
+Main region can have as many sub regions as it wants, but there can be not sub-region that contains any part of another sub-region of the main region
 
 
 events that will need to be listened for (flags)
