@@ -49,9 +49,15 @@ public class ECCommands
 	{
 		if (!hasPerm(s, "eventcenter.event.op.add")) return noAccess(s);
 		if (isCommandPending(s)) return pendingCommand(s);
-		if (selectedEvents.get(s) == null) return noEventSelected(s);
 		
-		s.sendMessage("Operator added");
+		ECEvent evt = evtManager.events.get(args[1]);
+		if (evt == null) return notFound ("Event", s);
+		Player p = getPlayerForName(args[2]);
+		if (p == null) return notFound("Player", s);
+		
+		evt.addOp(p);
+		
+		s.sendMessage(EventCenter.chPref + "Operator added");
 		return true;
 	}
 	
@@ -130,6 +136,7 @@ public class ECCommands
 			s.sendMessage(ChatColor.RED + "An unexpected error occurred. Your pending command has been canceled. Please try again");
 			confirmDelete.put(s, false);
 			confirmStop.put(s, false);
+			confirmNext.put(s, false);
 			return true;
 		}
 		
@@ -189,7 +196,7 @@ public class ECCommands
 	
 	public boolean createEvent(CommandSender s, String[] args)
 	{
-		if ((s instanceof ConsoleCommandSender) || !hasPerm(s, "eventcenter.event.new")) return noAccess(s);
+		if ((s instanceof ConsoleCommandSender) || !hasPerm(s, "eventcenter.event.add")) return noAccess(s);
 		if (isCommandPending(s)) return pendingCommand(s);
 		
 		if (!evtManager.events.containsKey(args[1]))

@@ -44,7 +44,7 @@ permissions:
     description: Gives access to creation, deletion and editing of events
     default: false
     children:
-      eventcenter.event.new: true
+      eventcenter.event.add: true
       eventcenter.event.edit: true
       eventcenter.event.remove: true
       eventcenter.event.info: true
@@ -54,7 +54,7 @@ permissions:
       eventcenter.event.run: true
       eventcenter.event.op.*: true
       eventcenter.event.region.*: true
-  eventcenter.event.new:
+  eventcenter.event.add:
     description: Allows the player to create new events
     default: false
   eventcenter.event.edit:

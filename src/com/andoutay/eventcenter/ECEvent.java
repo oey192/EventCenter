@@ -75,6 +75,16 @@ public class ECEvent
 		return rip;
 	}
 	
+	public void addOp(Player p)
+	{
+		if (!operators.contains(p)) operators.add(p);
+	}
+	
+	public void remOp(Player p)
+	{
+		if (operators.contains(p)) operators.remove(operators.indexOf(p));
+	}
+	
 	public void addSubRegion(ProtectedRegion rg)
 	{
 		if (!subRegions.contains(rg)) subRegions.add(rg);

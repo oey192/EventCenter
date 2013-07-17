@@ -135,7 +135,7 @@ Sets the maximum size for the team <name>. If "reset" is specified as the number
 If autoscramble is on for the event, this team will be excluded from any scrambling of teams
 Running /team <team> ignorescramble will disable scrambling for the specified team. /team <team> ignorescramble off will enable auto-scrambling for the team
 
-/team <name> additem <quantity> <itemID|itemName>
+/team <team> additem <quantity> <itemID|itemName>
 Adds <quantity> of an item to the default set of items a player will have on them when they spawn on this team. Any armor items specified will be auto-equipped. If more than one item is specified for a given armor slot, the first one encountered by the plugin will be assigned
 
 /team <name> removeitem <itemID|itemName>

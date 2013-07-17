@@ -1,5 +1,6 @@
 package com.andoutay.eventcenter;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
@@ -182,5 +183,33 @@ public class EventCenter extends JavaPlugin
 		}
 		
 		return false;
+	}
+	
+	public List<String> onTabComplete(CommandSender s, Command cmd, String label, String[] args)
+	{
+		if (cmd.getName().equalsIgnoreCase("event"))
+		{
+			if (args.length == 1)
+				return ECTabCompleter.getEventCommands(s, this);
+		}
+		else if (cmd.getName().equalsIgnoreCase("token"))
+		{
+			
+		}
+		else if (cmd.getName().equalsIgnoreCase("evt"))
+		{
+			
+		}
+		else if (cmd.getName().equalsIgnoreCase("team"))
+		{
+			
+		}
+		
+		
+		
+		
+		
+		
+		return null;
 	}
 }
