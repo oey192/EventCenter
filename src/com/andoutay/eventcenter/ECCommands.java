@@ -2,9 +2,11 @@ package com.andoutay.eventcenter;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -67,6 +69,12 @@ public class ECCommands
 		if (isCommandPending(s)) return pendingCommand(s);
 		if (selectedEvents.get(s) == null) return noEventSelected(s);
 		
+		if (!ECUtil.eventHasRegion(selectedEvents.get(s), args[0])) {
+			return notFound("Region", s);
+		}
+		
+		
+		
 		s.sendMessage("Adding region flag");
 		return true;
 	}
@@ -83,7 +91,7 @@ public class ECCommands
 	
 	public boolean addSubRegion(CommandSender s, String[] args)
 	{
-		if (!hasPerm(s, "eventcenter.event.region.add")) return noAccess(s);
+		if (!hasPerm(s, "eventcenter.event.region.add") || s instanceof ConsoleCommandSender) return noAccess(s);
 		if (isCommandPending(s)) return pendingCommand(s);
 		if (selectedEvents.get(s) == null) return noEventSelected(s);
 		
@@ -93,18 +101,39 @@ public class ECCommands
 			return true;
 		}
 		
-		//TODO: Add multiworld support and integration with config
-		ProtectedRegion rg = ECUtil.getWG(plugin).getRegionManager(server.getWorld("world")).getRegion(args[2]);
-		if (rg == null) return notFound("Region", s);
-		
-		if (ECUtil.regionContainsRegion(selectedEvents.get(s).mainRegion, rg))
-		{
+		boolean found = false, foundBad = false;
+		World w = ((Player)s).getWorld();
+		Iterator<World> worlds = server.getWorlds().iterator();
+		ProtectedRegion rg = null;
+		do {
+			rg = ECUtil.getWG(plugin).getRegionManager(server.getWorld(w.getName())).getRegion(args[2]);
+			if (rg != null) {
+				if (ECConfig.worldList.contains(w)) {
+					foundBad = false;
+					found = true;
+					break;
+				} else {
+					foundBad = true;
+				}
+			}
+		} while ((w = worlds.next()) != null);
+
+		if (foundBad && !found) {
+			return worldNotAllowed(s);
+		} else if (!found) {
+			return notFound("Region", s);
+		} else if (foundBad) {
+			//TODO: remove before release
+			EventCenter.log.warning(EventCenter.logPref + "You must fix your logic Luke!");
+		}
+
+		if (ECUtil.regionContainsRegion(selectedEvents.get(s).mainRegion, rg)) {
 			selectedEvents.get(s).addSubRegion(rg);
 			s.sendMessage(EventCenter.chPref + "Region added to " + selectedEvents.get(s).getName());
-		}
-		else
+		} else {
 			s.sendMessage(ChatColor.RED + "That region is not contained by the main region for " + selectedEvents.get(s).getName());
-		
+		}
+
 		return true;
 	}
 	
@@ -534,14 +563,34 @@ public class ECCommands
 		if (isCommandPending(s)) return pendingCommand(s);
 		if (selectedEvents.get(s) == null) return noEventSelected(s);
 		
-		//Check the world that the player is in IF that world is on the acceptable list of worlds
-		//If it isn't, loop through list of worlds trying to find it.
-		//If more than one is found, alert user that they need to specify a world
-		ProtectedRegion rg = ECUtil.getWG(plugin).getRegionManager(server.getWorld("world")).getRegion(args[2]);
-		if (rg == null) return notFound("Region", s);
-		
+		boolean found = false, foundBad = false;
+		World w = ((Player)s).getWorld();
+		Iterator<World> worlds = server.getWorlds().iterator();
+		ProtectedRegion rg = null;
+		do {
+			rg = ECUtil.getWG(plugin).getRegionManager(server.getWorld(w.getName())).getRegion(args[2]);
+			if (rg != null) {
+				if (ECConfig.worldList.contains(w)) {
+					foundBad = false;
+					found = true;
+					break;
+				} else {
+					foundBad = true;
+				}
+			}
+		} while ((w = worlds.next()) != null);
+
+		if (foundBad && !found) {
+			return worldNotAllowed(s);
+		} else if (!found) {
+			return notFound("Region", s);
+		} else if (foundBad) {
+			//TODO: remove before release
+			EventCenter.log.warning(EventCenter.logPref + "You must fix your logic luke!");
+		}
+
 		selectedEvents.get(s).mainRegion = rg;
-		
+
 		s.sendMessage(EventCenter.chPref + "Set main region for event");
 		return true;
 	}
@@ -752,6 +801,11 @@ public class ECCommands
 	private boolean noEventSelected(CommandSender s)
 	{
 		s.sendMessage(ChatColor.RED + "That command cannot be used unless an event is selected. Use /event select <name> to select an event");
+		return true;
+	}
+	
+	private boolean worldNotAllowed(CommandSender s) {
+		s.sendMessage(ChatColor.RED + "That region is not in an event-enabled world");
 		return true;
 	}
 	

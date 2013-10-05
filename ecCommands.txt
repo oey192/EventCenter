@@ -125,7 +125,7 @@ Sets the blockid for the helmet for the team
 /team setcolor <color>
 Sets the chat color for the team
 
-/team <teamName|Spec> setspawn
+/team <teamName|spec> setspawn
 Sets the spawn point for <teamName> to the your current location (including the direction you're facing)
 
 /team <name> maxplayers <#|reset>
@@ -169,13 +169,14 @@ On is default, but can be specified if desired. Off must be specified if scrambl
 
 All commands below throw an error if the regionName specified doesn't exist
 
-/event <regionName> add <flagName> ['win'] [points]
-Add <flagName> to the event. If "win" is specified, the event will be considered over when this flag triggers and the player or team that triggers the flag will win the event
+/event <regionName> add <flagName> ['win'|'lose'] [points]
+Add <flagName> to the event. If "win" is specified, the event will be considered over when this flag triggers and the player or team that triggers the flag will win the event. The same applies for "lose"
 If points are specified, that number of points will be given to the player that triggers the flag. Negative points are allowed
 
 /event <regionName> setwin <flagName> [yes|no]
 Yes or no is optional. If neither is present, yes is assumed.
 Makes <flagName> a winnning flag if "yes", makes it a normal flag if "no"
+If there is no flag <flagName> on <regionName>, an error will be returned
 
 /event <regionName> switchteam <flagName> [yes|no]
 Sets whether the flag event causes the affected player to switch teams or not.
@@ -257,7 +258,7 @@ Make spawn point for ECs in case they need a control room (e.g. Deathrun)
 
 Can we disable Friendly fire? And make this configurable per event?
 
-Add/remove certain permissions to/from people when they are playing an event (likewise remove the permissions from them when they stop playing and/or join Spec)
+Add/remove certain permissions to/from people when they are playing an event (likewise remove the permissions from them when they stop playing and/or join spec)
 
 Can we disable the plugin that stops people from picking up other people's items in the event worlds and/or in certain event regions?
 
@@ -270,10 +271,10 @@ Perhaps have ability to set a respawn point per death pit?
 Need to have sub-region that causes win when player enters it
 
 EC should be able to set a maximum number of player winners when there's only one team (e.g. Deathrun, Evil Race)
+There should be a no-team mode (every man for himself) - this will have no team chats or team colors, etc, and should have some way to configure max number of winners
 
-
-May need the ability for events to cause actions such as switch player from team A to team B
-e.g. if re-implementing prop-hunt
+Need the ability for events to cause actions such as switch player from team A to team B
+e.g. if re-implementing prop-hunt, definitely will need for virus
 
 EC needs command to announce stuff to server as well as people in events
 Perhaps just /bcast and then event specific?
@@ -294,7 +295,7 @@ Player death
 Player whacked
 Player dropped item
 distance from starting location - ?
-PVP-enabked/disabled
+PVP-enabled/disabled
 friendly-fire on/off
 various potions to apply to players
 can an event cause a potion?
